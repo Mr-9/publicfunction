@@ -1,4 +1,29 @@
 
+<!-- TOC -->
+
+- [说明文档](#说明文档)
+- [function.php](#functionphp)
+    - [ma() “跳转地址”](#ma-跳转地址)
+    - [returnAPPJSON() “返回json数组”](#returnappjson-返回json数组)
+    - [dbOperate() “跨域操作数据库有配置文件”](#dboperate-跨域操作数据库有配置文件)
+    - [_dbOperate() “跨域操作数据库，输入数据库信息”](#_dboperate-跨域操作数据库输入数据库信息)
+    - [Jpush() “极光推送”](#jpush-极光推送)
+    - [showExcel() “导出excel表格”](#showexcel-导出excel表格)
+    - [post_curl() 模拟POST请求方法](#post_curl-模拟post请求方法)
+    - [encodePass() “密码加盐”](#encodepass-密码加盐)
+    - [checkPass() “密码校验”](#checkpass-密码校验)
+    - [returnHtmldecode() “html实体化decode方法”](#returnhtmldecode-html实体化decode方法)
+    - [time_to_date() “时间戳转时间”](#time_to_date-时间戳转时间)
+    - [pageFormatBiz() “分页格式化数据”](#pageformatbiz-分页格式化数据)
+    - [sendSms() “发送短信”](#sendsms-发送短信)
+    - [checkVerifyCode() “验证码校验”](#checkverifycode-验证码校验)
+    - [ch2arr() “中文拆数组”](#ch2arr-中文拆数组)
+    - [getFirstCharter() “php获取中文字符拼音首字母”](#getfirstcharter-php获取中文字符拼音首字母)
+    - [getMapName() “查询当前id所属父级类别的名称”](#getmapname-查询当前id所属父级类别的名称)
+    - [getMapId() “得到当前id的父类id数组集合”](#getmapid-得到当前id的父类id数组集合)
+    - [getTree() “递归获取列表”](#gettree-递归获取列表)
+
+<!-- /TOC -->
 # 说明文档
 
 # function.php  

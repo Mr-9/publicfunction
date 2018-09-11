@@ -4,48 +4,40 @@
 # function.php  
 
 ## ma() “跳转地址”
-
-- 
-
-
-    ```
-    /**
-    * @param $text 提示文字
-    * @param $url  跳转路径
-    */
-    <?php
-        function ma($text, $url){
-            echo "<script>
-                    alert('".$text."');
-                    location.href='".$url."';
-                </script>
-                    ";
-            exit;
-        }
-    ?>
-    ```
-    说明文档： 
-    
-## returnAPPJSON() “返回json数组”
-    ```
-    /**
-     * 返回json数据
-     * @param $ret
-     * @param string $msg
-     * @param array $data
-     */
-    function returnAPPJSON($ret, $msg='', $data=array()){
-            $res['ret'] = $ret.'';
-            $res['msg'] = $msg;
-            $res['data'] = (($data==null)?array():$data);   // $data存在则返回数组不存在返回空数组
-            //$data?$res['data'] = $data:'';                // $data存在则返回不存在不返回
-            exit(json_encode($res));
+```php
+/**
+* @param $text 提示文字
+* @param $url  跳转路径
+*/
+    function ma($text, $url){
+        echo "<script>
+                alert('".$text."');
+                location.href='".$url."';
+            </script>
+                ";
+        exit;
     }
-    ```
+```    
+## returnAPPJSON() “返回json数组”
+```php
+/**
+    * 返回json数据
+    * @param $ret
+    * @param string $msg
+    * @param array $data
+    */
+function returnAPPJSON($ret, $msg='', $data=array()){
+        $res['ret'] = $ret.'';
+        $res['msg'] = $msg;
+        $res['data'] = (($data==null)?array():$data);   // $data存在则返回数组不存在返回空数组
+        //$data?$res['data'] = $data:'';                // $data存在则返回不存在不返回
+        exit(json_encode($res));
+}
+```
 
 ## dbOperate() “跨域操作数据库有配置文件”
-    ```
-       /**
+```php
+    /**
      * 数据库操作   dbOperate("manufacturer",'',1,3,$where);
      * @param unknown $table 表名
      * @param unknown $tablePrefix  表前缀
@@ -112,11 +104,10 @@
         }
 
     }
-
-    ```
+```
 
 ## _dbOperate() “跨域操作数据库，输入数据库信息”
-```
+```php
     /**
      * 数据库操作
      * @param unknown $table 表名
@@ -187,7 +178,7 @@
 
 ## Jpush() “极光推送”
 
-```
+```php
     /**
      *	极光推送
      * @param unknown $alias   极光注册ID
@@ -228,7 +219,7 @@
     }
 ```
 ## showExcel() “导出excel表格”
-```
+```php
     /**
     * 导出Excel表格（单工作表）
     * @param array $file    标识列         例：$file = array('news_title','news_content'……)
@@ -272,7 +263,7 @@
     }
 ```
 ## post_curl() 模拟POST请求方法
-```
+```php
     /**
      * curlPOST请求方法
      * @param unknown $xmlend  参数集合
@@ -313,7 +304,7 @@
     }
 ```
 ## encodePass() “密码加盐”
-```
+```php
     /**
      * 密码加盐Hash
      * @param $passSHA 要加密的密码
@@ -329,7 +320,7 @@
 
 ## checkPass() “密码校验”
 
-```
+```php
     /**
      * 密码校验
      * @param $passSHA 待验证的密码
@@ -350,7 +341,7 @@
 ```
 
 ## returnHtmldecode() “html实体化decode方法”
-```
+```php
     function returnHtmldecode($data){
         $back=html_entity_decode($data);
         return $back;
@@ -358,14 +349,14 @@
 ```
 
 ## time_to_date() “时间戳转时间”
-```
+```php
     function time_to_date($time,$date='Y-m-d H:i:s'){
             return date($date,$time);
     }
 ```
 
 ## pageFormatBiz() “分页格式化数据”
-```
+```php
     /**
      * 分页格式化
      * $Page = new \Think\Page($count,15);
@@ -383,7 +374,7 @@
 
 ## sendSms() “发送短信”
 
-```
+```php
     /* 发送短信
      * $phone 接收短信号码
      * $sign 发送短信前面必填
@@ -429,7 +420,7 @@
 ```
 
 ## checkVerifyCode() “验证码校验”
-```
+```php
     /**
      * 验证码校验
      * @param unknown $phone 手机号
@@ -451,7 +442,7 @@
 ```
 
 ## ch2arr() “中文拆数组”
-```
+```php
     /**
      * @param $str 中文字符串
      * $str = "中国话";
@@ -468,7 +459,7 @@
 ```
 
 ## getFirstCharter() “php获取中文字符拼音首字母”
-```
+```php
     /**
      * @name php获取中文字符拼音首字母
      * @param $str
@@ -512,7 +503,7 @@
 ```
 
 ## getMapName() “查询当前id所属父级类别的名称”
-```
+```php
     /**
      * @param $id post id值
      * @param array $map 返回的数组
@@ -539,7 +530,7 @@
 ```
 
 ## getMapId() “得到当前id的父类id数组集合”
-```
+```php
     /**
      * @param $id post id值
      * @param array $map 返回的数组
@@ -565,7 +556,7 @@
 ```
 
 ## getTree() “递归获取列表”
-```
+```php
     /**
      *
      * 递归获取列表

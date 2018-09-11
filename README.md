@@ -228,10 +228,10 @@ function returnAPPJSON($ret, $msg='', $data=array()){
     * @param array(array) $val  值  二维数组
     * @param string $name
     * $name = '出库统计';
-        $file = array('chkout_no','user_name','time','num','value');
-        $title = array('出库单号','用户','日期','商品种类','总价值');
-        $head = array('A','B','C','D','E');
-        self::showExcel($file, $title, $head, $list, $name);
+    * $file = array('chkout_no','user_name','time','num','value');
+    * $title = array('出库单号','用户','日期','商品种类','总价值');
+    * $head = array('A','B','C','D','E');
+    * self::showExcel($file, $title, $head, $list, $name);
     */
     function showExcel($file, $title, $head, $val, $name){
         vendor('PHPExcel.Classes.PHPExcel');

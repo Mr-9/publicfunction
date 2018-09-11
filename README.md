@@ -189,9 +189,9 @@ function returnAPPJSON($ret, $msg='', $data=array()){
      * @param string $sound     声音
      * @return boolean
      * $reg_id = M('member')->where(array('member_id'=>$r))->getField('registration_id');
-     foreach (explode(',',$reg_id) as $kk=>$vv){
-     Jpush($vv, '新订单', '您有新订单',array('type'=>'1'),1);
-     }
+     * foreach (explode(',',$reg_id) as $kk=>$vv){
+     * Jpush($vv, '新订单', '您有新订单',array('type'=>'1'),1);
+     *}
      */
     function Jpush($app_key,$master_secret,$alias,$title,$content,$ky=array(),$sound='iOS sound'){
         //极光推送

@@ -22,6 +22,14 @@
     - [getMapName() “查询当前id所属父级类别的名称”](#getmapname-查询当前id所属父级类别的名称)
     - [getMapId() “得到当前id的父类id数组集合”](#getmapid-得到当前id的父类id数组集合)
     - [getTree() “递归获取列表”](#gettree-递归获取列表)
+- [PublicController.class.php](#publiccontrollerclassphp)
+    - [pageS() “封装的tp的分页”](#pages-封装的tp的分页)
+    - [appPageS() “封装的tp分页，根据传参返回列表”](#apppages-封装的tp分页根据传参返回列表)
+    - [EditOk() “增加编辑函数”](#editok-增加编辑函数)
+    - [Del() “删除”](#del-删除)
+    - [DelAll “批量删除”](#delall-批量删除)
+    - [detail() “详情”](#detail-详情)
+    - [addAll()批量增加](#addall批量增加)
 
 <!-- /TOC -->
 # 说明文档
@@ -613,3 +621,185 @@ function returnAPPJSON($ret, $msg='', $data=array()){
         return $list;
     }
 ```
+
+# PublicController.class.php
+
+## pageS() “封装的tp的分页”
+```php
+    /**
+     * 封装的tp分页--用tp封装的$page
+     * @param $table  表名
+     * @param $num    每页显示数量
+     * @param string $order  排序规则
+     * @param string $field  返回参数
+     * @param string $where  查询条件
+     * @param string $join   链接表
+     * @return mixed  返回 page 和 list
+     */
+    public function pageS($table, $num, $order='', $field='*', $where='', $join=''){
+        $User = M($table); // 实例化User对象
+        $count      = $User->join($join)->where($where)->count();// 查询满足要求的总记录数
+        $Page       = new \Think\Page($count,$num);// 实例化分页类 传入总记录数和每页显示的记录数
+        $show       = $Page->show();// 分页显示输出// 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+        $list = $User->join($join)->order($order)->field($field)->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('list',$list);// 赋值分页输出
+        return $list;
+    }
+```
+
+## appPageS() “封装的tp分页，根据传参返回列表”
+```php
+    /**
+     * @param $table  表名
+     * @param int $page      传人的页码
+     * @param int $limit     每页显示的条数
+     * @param string $order  排序方法
+     * @param string $field  查询的规则
+     * @param string $where  查询的条件
+     * @param string $join   链接的表名
+     * @return $data['list'] 返回的列表  $data['pages'] 返回的总页数
+     */
+    public function appPageS($table, $page=1, $limit=30, $order='', $field='*', $where='', $join=''){
+        $User = M($table); // 实例化User对象
+        $count      = $User->join($join)->where($where)->count();// 查询满足要求的总记录数
+        if(!empty($count)){
+           // $list = $User->join($join)->order($order)->field($field)->where($where)->page($page)->limit($limit)->select();
+           // $list['pages'] = ceil($count/$limit) ;
+            $data['list'] = $User->join($join)->order($order)->field($field)->where($where)->page($page)->limit($limit)->select();
+            $data['pages'] =  ceil($count/$limit) ;
+            return $data;
+        }else{
+            return null;
+        }
+
+    }
+```
+
+## EditOk() “增加编辑函数”
+```php
+    /**
+     * 编辑增加操作
+     * @param $table "表名"
+     * @param string $data array('name'=>'豆豆','password'=>'33')
+     * @param string $idname "接收id的字段名"
+     * @return bool|mixed  "返回的结果"
+     */
+    protected function EditOk($table, $data='', $idname='id'){
+        $table=M($table);
+        $table->data(array());
+        $table->create();
+        if (!empty($data)) {
+            if (!is_array($data)) {
+                return false;
+            }
+            foreach ($data['all'] as $k=>$v) {
+                $table->$k=$v;
+            }
+        }
+        if (empty($_REQUEST[$idname])) {
+            foreach ($data['add'] as $k=>$v) {
+                $table->$k=$v;
+            }
+            $res=$table->add($data);
+        }else{
+            foreach ($data['save'] as $k=>$v) {
+                $table->$k=$v;
+            }
+            $res=$table->where(array($table->getPk()=>$_REQUEST[$idname]))->save($data);
+        }
+        return $res;
+    }
+```
+
+## Del() “删除”
+```php
+    /**
+     * @param $table 表名
+     * @param string $is_del  为空表示真删除
+     * @param string $idname  接收的id名称
+     * @param string $Tidname 表中的id名称
+     * @return bool|mixed
+     */
+    protected function Del($table, $is_del='', $idname='id', $Tidname=''){
+        if (empty($_REQUEST[$idname])) {
+            return false;
+        }
+        $table=M($table);
+        $Tidname || $Tidname=$table->getPk();
+        if (empty($is_del)) {
+            $res=$table->where(array($Tidname=>$_REQUEST[$idname]))->delete();
+        }else{
+            $res=$table->where(array($Tidname=>$_REQUEST[$idname]))->setField($is_del,1);
+        }
+        return $res;
+    }
+```
+
+## DelAll “批量删除”
+```php
+    /**
+     * 批量删除
+     * @param $table 表名
+     * @param string $idname  接收的id名称
+     * @param string $Tidname 表单中的id名称
+     * @return bool|mixed
+     */
+    protected function DelAll($table, $idname='id', $Tidname=''){
+        if (empty($table)) {
+            return false;
+        }
+        $ids=(is_array($_REQUEST[$idname])?implode(',',$_REQUEST[$idname]):$_REQUEST[$idname]);
+        if (empty($ids)) {
+            return false;
+        }
+        $table=M($table);
+        $Tidname || $Tidname=$table->getPk();
+        $res=$table->where(array($Tidname=>array('in',$ids)))->delete();
+        return $res;
+    }
+```
+
+## detail() “详情”
+```php
+    /**
+     * @param $table 表单
+     * @param string $idname 接收的id名称
+     * @return bool|mixed|string 返回的数据
+     */
+    protected function detail($table, $idname='id'){
+        if (empty($table)) {
+            return false;
+        }
+        $table=M($table);
+        if (empty($_REQUEST[$idname])) {
+            $res='';
+        }else{
+            $res=$table->where(array($table->getPk()=>$_REQUEST[$idname]))->find();
+        }
+        return $res;
+    }
+```
+
+## addAll()批量增加
+```php
+    /**
+     * @param $model   实例化模型$model = M('user','t_','DB_CONFIG1');
+     * @param $data    批量插入的二维数组
+     * @param $idname  接收的id名称
+     * @param $Tidname 数据库中的id名称
+     * @return mixed   返回的参数
+     */
+    public function addAll($model, $data, $idname, $Tidname){
+        foreach ($data as $k=>$v){
+            if (!empty($v[$idname])){
+                $res = $model -> where(array($Tidname=>$v[$idname])) ->save($v);
+            }else{
+                $res = $model -> add($v);
+            }
+        }
+        return $res;
+    }
+```
+
+

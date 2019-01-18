@@ -30,6 +30,7 @@
     - [DelAll “批量删除”](#delall-批量删除)
     - [detail() “详情”](#detail-详情)
     - [addAll()批量增加](#addall批量增加)
+    - [url请求方法](#url请求方法)
 
 <!-- /TOC -->
 # 说明文档
@@ -801,7 +802,7 @@ function returnAPPJSON($ret, $msg='', $data=array()){
         return $res;
     }
 ```
-
+## url请求方法
 /**
  * url请求方法
  * @param unknown $postfields  参数集合

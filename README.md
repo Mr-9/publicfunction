@@ -31,6 +31,9 @@
     - [detail() “详情”](#detail-详情)
     - [addAll()批量增加](#addall批量增加)
     - [url请求方法](#url请求方法)
+- [使用技巧](#使用技巧)
+    - [数据库映射](#数据库映射)
+    - [写数据](#写数据)
 
 <!-- /TOC -->
 # 说明文档
@@ -859,4 +862,32 @@ function httpRequest($url, $method, $postfields = null, $headers = array(), $deb
     return $response;
     //return array($http_code, $response,$requestinfo);
 }
+```
+# 使用技巧
+## 数据库映射
+```
+CREATE TABLE `organization_chart` (
+  `organization_chart_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `organization_chart_name` varchar(255) DEFAULT '' COMMENT '部门名称',
+  `time` int(11) DEFAULT '0' COMMENT '添加时间',
+  `organization_chart_level` int(11) DEFAULT '0' COMMENT '部门等级',
+  `organization_chart_pid` int(11) DEFAULT '0' COMMENT '上级部门ID',
+  `stor` int(11) DEFAULT '0' COMMENT '排序',
+  `organization_chart_content` varchar(600) DEFAULT '' COMMENT '部门描述',
+  `infos_id` int(11) DEFAULT '0' COMMENT '关联平台ID',
+  PRIMARY KEY (`organization_chart_id`)
+) ENGINE=FEDERATED    
+CONNECTION='mysql://root:123456@192.168.2.210:3306/zhypt/organization_chart' COMMENT '部门映射表';
+
+//my.ini 数据库配置文件
+;开启映射
+[mysqld]
+federated
+```
+## 写数据
+```
+
+$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+fwrite($myfile, json_encode($goods));
+fclose($myfile);
 ```
